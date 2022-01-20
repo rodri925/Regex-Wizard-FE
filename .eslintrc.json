@@ -1,7 +1,7 @@
 {
     "env": {
         "browser": true,
-        "commonjs": true,
+        "commonjs": false,
         "es2021": true
     },
     "extends": [
@@ -18,5 +18,7 @@
         "react"
     ],
     "rules": {
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+        "react/function-component-definition": [2, { "namedComponents": "arrow-function" }]
     }
 }
