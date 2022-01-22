@@ -2,6 +2,6 @@
 
 palette 2:
 #f7e8e3 - tan
-#504440 - dark tan
+#75E6DA - turquoise
 #0069D2 - blue
 #00B5FF - light blue
