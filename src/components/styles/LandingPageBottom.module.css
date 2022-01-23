@@ -8,7 +8,7 @@
     align-items: center;
     width: 100vw;
     height: 100vh;
-    background-color: #f7e8e3;
+    background-color: #d9e7ff;
     font-family: "Oswald", sans-serif;
 }
 
@@ -75,5 +75,13 @@ hr {
     }
     .smallContainer {
         width: 70%;
+    }
+
+    .smallContainer a {
+        height: 20%;
+    }
+
+    hr {
+        bottom: 7%;
     }
 }
