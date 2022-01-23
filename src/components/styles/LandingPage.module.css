@@ -28,14 +28,19 @@
 
 .CTA h1 {
     position: relative;
-    font-size: 3rem;
-    top: 5%;
+    align-self: auto;
     text-align: center;
+    padding: 0;
+    margin-left: 0;
+    font-size: 3rem;
+    margin-top: 12%;
+    margin-bottom: 3%;
 }
 
 .CTA p {
     position: relative;
     top: 5%;
+    margin-top: 5%;
     font-size: 1.75rem;
     text-align: center;
     margin-left: 5%;
