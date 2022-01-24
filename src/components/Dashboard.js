@@ -12,14 +12,10 @@ const Dashboard = () => {
   const [missionPercent, setMissionPercent] = useState(() => 10 * 4);
   const [toggleModal, setToggleModal] = useState(false);
   const [currentScroll, setCurrentScroll] = useState(null);
+  const [user, setUser] = useState('Mickey');
+  const [category, setCategory] = useState('all scrolls');
 
-  const setupModal = (event, scroll) => {
-    event.preventDefault();
-    setToggleModal(true);
-    setCurrentScroll(scroll);
-  };
-
-  const fakeScrolls = [
+  const [fakeScrolls, setFakeScrolls] = useState([
     {
       user: 'Mickey',
       regex: '[aeioasdfasfasdfasdfdasfasdfasdfadsfasdfasu]',
@@ -56,7 +52,37 @@ const Dashboard = () => {
       desc: 'this regex finds 3 letter words',
       id: 6,
     },
-  ];
+  ]);
+
+  const [filteredScrolls, setFilteredScrolls] = useState(fakeScrolls);
+
+  const setupModal = (event, scroll) => {
+    event.preventDefault();
+    setToggleModal(true);
+    setCurrentScroll(scroll);
+  };
+
+  const filterScrolls = (event, currentCategory) => {
+    event.preventDefault();
+    if (currentCategory === 'my scrolls') {
+      const myScrolls = fakeScrolls.filter((scroll) => scroll.user === user);
+      setFilteredScrolls(myScrolls);
+    } else if (currentCategory === 'favorited scrolls') {
+      const favScrolls = fakeScrolls.filter((scroll) => scroll.user !== user);
+      setFilteredScrolls(favScrolls);
+    } else {
+      setFilteredScrolls(fakeScrolls);
+    }
+  };
+  /* Need to Fix: must fix state immediately after deleting */
+  const deleteScroll = (event, delScroll) => {
+    event.preventDefault();
+    if (window.confirm(`Delete ${delScroll.regex}?`)) {
+      const newScrolls = fakeScrolls.filter((scroll) => scroll.id !== delScroll.id);
+      setFakeScrolls(newScrolls);
+    }
+  };
+
   return (
     <div className={styles.outerContainer}>
       <h1>Hi User!</h1>
@@ -105,8 +131,11 @@ const Dashboard = () => {
               Personal Scrolls
             </span>
             <div className={styles.formAndSpan}>
-              <form className={styles.pScrollSelection}>
-                <select name="scrolls" id="scrolls">
+              <form
+                className={styles.pScrollSelection}
+                onSubmit={(event) => filterScrolls(event, category)}
+              >
+                <select name="scrolls" id="scrolls" value={category} onChange={(e) => setCategory(e.target.value)}>
                   <option value="all scrolls">All Scrolls</option>
                   <option value="my scrolls">My Scrolls</option>
                   <option value="favorited scrolls">Favorited Scrolls</option>
@@ -140,7 +169,7 @@ const Dashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {fakeScrolls.map((scroll) => (
+                {filteredScrolls.map((scroll) => (
                   <tr key={scroll.id}>
                     <td className={styles.THlarge}>{scroll.regex}</td>
                     <td className={styles.THsmall}>{scroll.user}</td>
@@ -150,7 +179,7 @@ const Dashboard = () => {
                       </button>
                     </td>
                     <td className={styles.THsmall}>
-                      <button type="submit" className={`${styles.tableBtn} ${styles.delBtn}`}>
+                      <button type="submit" className={`${styles.tableBtn} ${styles.delBtn}`} onClick={(event) => deleteScroll(event, scroll)}>
                         Delete
                       </button>
                     </td>
