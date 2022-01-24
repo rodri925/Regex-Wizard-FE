@@ -1,4 +1,6 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
+import ScrollModal from './ScrollModal';
 import styles from './styles/Dashboard.module.css';
 
 const Dashboard = () => {
@@ -8,22 +10,51 @@ const Dashboard = () => {
    */
   const [lessonPercent, setLessonPercent] = useState(() => 7 * 4);
   const [missionPercent, setMissionPercent] = useState(() => 10 * 4);
+  const [toggleModal, setToggleModal] = useState(false);
+  const [currentScroll, setCurrentScroll] = useState(null);
+
+  const setupModal = (event, scroll) => {
+    event.preventDefault();
+    setToggleModal(true);
+    setCurrentScroll(scroll);
+  };
 
   const fakeScrolls = [
     {
       user: 'Mickey',
-      regex: '[aeiou]',
+      regex: '[aeioasdfasfasdfasdfdasfasdfasdfadsfasdfasu]',
       desc: 'this regex finds vowels',
+      id: 1,
     },
     {
       user: 'Borby',
       regex: '/ugly/',
       desc: 'this regex finds the ugly',
+      id: 2,
     },
     {
       user: 'Egg',
       regex: '...',
       desc: 'this regex finds 3 letter words',
+      id: 3,
+    },
+    {
+      user: 'Mickey',
+      regex: '[aeiou]',
+      desc: 'this regex finds vowels',
+      id: 4,
+    },
+    {
+      user: 'Borby',
+      regex: '/ugly/',
+      desc: 'this regex finds the ugly',
+      id: 5,
+    },
+    {
+      user: 'Egg',
+      regex: '...',
+      desc: 'this regex finds 3 letter words',
+      id: 6,
     },
   ];
   return (
@@ -56,7 +87,7 @@ const Dashboard = () => {
                 <br />
                 Lesson
               </p>
-              <a href="./Training">Start Now</a>
+              <a href="./Training">Start</a>
             </div>
             <div className={styles.incompleteBox}>
               <p>
@@ -64,14 +95,70 @@ const Dashboard = () => {
                 <br />
                 Mission
               </p>
-              <a href="./Missions">Start Now</a>
+              <a href="./Missions">Start</a>
             </div>
           </div>
         </div>
         <div className={styles.personalScrolls}>
-          <span>
-            Personal Scrolls
-          </span>
+          <div className={styles.pScrollHeader}>
+            <span>
+              Personal Scrolls
+            </span>
+            <div className={styles.formAndSpan}>
+              <form className={styles.pScrollSelection}>
+                <select name="scrolls" id="scrolls">
+                  <option value="all scrolls">All Scrolls</option>
+                  <option value="my scrolls">My Scrolls</option>
+                  <option value="favorited scrolls">Favorited Scrolls</option>
+                </select>
+                <button type="submit" className={styles.tableBtn}>Filter</button>
+              </form>
+              <span>
+                Scrolls:&nbsp;
+                {fakeScrolls.length}
+                /50
+              </span>
+            </div>
+            <hr />
+          </div>
+          <div className={styles.tableContainer}>
+            {toggleModal && (
+            <ScrollModal
+              regex={currentScroll.regex}
+              user={currentScroll.user}
+              desc={currentScroll.desc}
+              setToggleModal={setToggleModal}
+            />
+            )}
+            <table>
+              <thead>
+                <tr>
+                  <th className={styles.THlarge}>Regex</th>
+                  <th className={styles.THsmall}>User</th>
+                  <th className={styles.THsmall}>Desc</th>
+                  <th className={styles.THsmall}>Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                {fakeScrolls.map((scroll) => (
+                  <tr key={scroll.id}>
+                    <td className={styles.THlarge}>{scroll.regex}</td>
+                    <td className={styles.THsmall}>{scroll.user}</td>
+                    <td className={styles.THsmall}>
+                      <button type="submit" className={styles.tableBtn} onClick={(event) => setupModal(event, scroll)}>
+                        Desc
+                      </button>
+                    </td>
+                    <td className={styles.THsmall}>
+                      <button type="submit" className={`${styles.tableBtn} ${styles.delBtn}`}>
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
